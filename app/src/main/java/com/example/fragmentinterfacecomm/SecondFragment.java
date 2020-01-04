@@ -1,34 +1,29 @@
 package com.example.fragmentinterfacecomm;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.fragmentinterfacecomm.viewmodel.PageViewModel;
+import com.example.fragmentinterfacecomm.Rxbus.RxBus;
+
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 
 
 /**
 
  */
 public class SecondFragment extends Fragment {
-    private PageViewModel pageViewModel;
     private TextView txtName;
 
-    public SecondFragment() {
-        // Required empty public constructor
-    }
 
     /**
      * Use this factory method to create a new instance of this fragment.
@@ -43,8 +38,6 @@ public class SecondFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // initialise ViewModel here
-        pageViewModel = ViewModelProviders.of(requireActivity()).get(PageViewModel.class);
     }
 
     @Override
@@ -58,13 +51,38 @@ public class SecondFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         txtName = view.findViewById(R.id.textViewName);
 
-        pageViewModel.getName().observe(requireActivity(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                txtName.setText(s);
-            }
-        });
+        RxBus.getInstance().listen().subscribe(getInputObserver());
     }
+
+    private Observer<String> getInputObserver() {
+        return new Observer<String>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(String s) {
+                txtName.setText(s);
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+
+
+
+        };
+    }
+
+
 
 }
 

@@ -1,7 +1,5 @@
 package com.example.fragmentinterfacecomm;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,15 +12,13 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.example.fragmentinterfacecomm.viewmodel.PageViewModel;
+import com.example.fragmentinterfacecomm.Rxbus.RxBus;
 import com.google.android.material.textfield.TextInputEditText;
 
 
 
 public class FirstFragment extends Fragment {
-    private PageViewModel pageViewModel;
 
     public FirstFragment() {
         // Required empty public constructor
@@ -39,8 +35,6 @@ public class FirstFragment extends Fragment {
     @Override public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // init ViewModel
-        pageViewModel = ViewModelProviders.of(requireActivity()).get(PageViewModel.class);
     }
 
     @Override
@@ -61,8 +55,7 @@ public class FirstFragment extends Fragment {
             }
 
             @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                pageViewModel.setName(charSequence.toString());
-            }
+                RxBus.getInstance().publish(charSequence.toString());            }
 
             @Override public void afterTextChanged(Editable editable) {
 
