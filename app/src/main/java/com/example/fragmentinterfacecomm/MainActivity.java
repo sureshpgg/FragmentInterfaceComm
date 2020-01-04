@@ -7,7 +7,7 @@ import android.os.Bundle;
 
 import com.google.android.material.tabs.TabLayout;
 
-public class MainActivity extends AppCompatActivity implements FirstFragment.OnFragmentCommunicationListener{
+public class MainActivity extends AppCompatActivity implements FirstFragment.OnFragmentCommunicationListener,SecondFragment.OnSecondFragmentCommunicationListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,4 +39,15 @@ public class MainActivity extends AppCompatActivity implements FirstFragment.OnF
             fragment.onEmailChange(email);
         }
     }
+
+    @Override
+    public void onTyping(String ontype) {
+        String tag = "android:switcher:" + R.id.view_pager + ":" + 0;
+        FirstFragment fragment = (FirstFragment) getSupportFragmentManager().findFragmentByTag(tag);
+        if (fragment != null) {
+            fragment.onTypeStatus(ontype);
+        }
+    }
+
+
 }

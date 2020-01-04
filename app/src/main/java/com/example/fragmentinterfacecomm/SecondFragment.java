@@ -26,6 +26,16 @@ public class SecondFragment extends Fragment {
     public SecondFragment() {
         // Required empty public constructor
     }
+    OnSecondFragmentCommunicationListener second_comm_listner=null;
+    @Override
+    public void onAttach(@NonNull Context context) {
+        if(context instanceof OnSecondFragmentCommunicationListener){
+
+            second_comm_listner=(OnSecondFragmentCommunicationListener)context;
+        }
+
+        super.onAttach(context);
+    }
 
     /**
      * Use this factory method to create a new instance of this fragment.
@@ -49,15 +59,34 @@ public class SecondFragment extends Fragment {
         txtEmail = view.findViewById(R.id.textViewEmail);
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        second_comm_listner = null;
+    }
+
     public void onNameChange(String name) {
         txtName.setText(name);
+        second_comm_listner.onTyping("Name typing");
         Log.d(TAG, "onNameChange() returned: " + name);
+     //   second_comm_listner. onTypingStoped("");
     }
 
     public void onEmailChange(String email) {
         txtEmail.setText(email);
+        second_comm_listner.onTyping("Email typing");
+
         Log.d(TAG, "onEmailChange() returned: " + email);
+      //  second_comm_listner. onTypingStoped("");
+
     }
+
+    public interface OnSecondFragmentCommunicationListener {
+        void onTyping(String ontype);
+
+    }
+
+
 }
 
 

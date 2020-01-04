@@ -13,6 +13,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -20,7 +21,7 @@ import com.google.android.material.textfield.TextInputEditText;
 
 public class FirstFragment extends Fragment {
     private OnFragmentCommunicationListener mListener;
-
+TextView type;
     public FirstFragment() {
         // Required empty public constructor
     }
@@ -46,8 +47,10 @@ public class FirstFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         TextInputEditText nameEditText = view.findViewById(R.id.textInputTextName);
         TextInputEditText emailEditText = view.findViewById(R.id.textInputTextEmail);
+        type=view.findViewById(R.id.typestatus);
         nameEditText.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                onTypeStatus("");
 
             }
 
@@ -62,6 +65,7 @@ public class FirstFragment extends Fragment {
 
         emailEditText.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                onTypeStatus("");
 
             }
 
@@ -70,7 +74,6 @@ public class FirstFragment extends Fragment {
             }
 
             @Override public void afterTextChanged(Editable editable) {
-
             }
         });
     }
@@ -102,4 +105,11 @@ public class FirstFragment extends Fragment {
 
         void onEmailChange(String email);
     }
+
+    public void onTypeStatus(String status){
+        type.setText(status);
+
+    }
+
+
 }
