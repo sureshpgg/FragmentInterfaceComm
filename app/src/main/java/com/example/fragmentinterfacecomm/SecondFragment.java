@@ -7,6 +7,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,27 +16,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.fragmentinterfacecomm.viewmodel.PageViewModel;
+
 
 /**
 
  */
 public class SecondFragment extends Fragment {
-    private static final String TAG = "SecondFragment";
-
-    private TextView txtName, txtEmail;
+    private PageViewModel pageViewModel;
+    private TextView txtName;
 
     public SecondFragment() {
         // Required empty public constructor
-    }
-    OnSecondFragmentCommunicationListener second_comm_listner=null;
-    @Override
-    public void onAttach(@NonNull Context context) {
-        if(context instanceof OnSecondFragmentCommunicationListener){
-
-            second_comm_listner=(OnSecondFragmentCommunicationListener)context;
-        }
-
-        super.onAttach(context);
     }
 
     /**
@@ -47,6 +40,14 @@ public class SecondFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // initialise ViewModel here
+        pageViewModel = ViewModelProviders.of(requireActivity()).get(PageViewModel.class);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -56,36 +57,14 @@ public class SecondFragment extends Fragment {
     @Override public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         txtName = view.findViewById(R.id.textViewName);
-        txtEmail = view.findViewById(R.id.textViewEmail);
+
+        pageViewModel.getName().observe(requireActivity(), new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                txtName.setText(s);
+            }
+        });
     }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        second_comm_listner = null;
-    }
-
-    public void onNameChange(String name) {
-        txtName.setText(name);
-        second_comm_listner.onTyping("Name typing");
-        Log.d(TAG, "onNameChange() returned: " + name);
-     //   second_comm_listner. onTypingStoped("");
-    }
-
-    public void onEmailChange(String email) {
-        txtEmail.setText(email);
-        second_comm_listner.onTyping("Email typing");
-
-        Log.d(TAG, "onEmailChange() returned: " + email);
-      //  second_comm_listner. onTypingStoped("");
-
-    }
-
-    public interface OnSecondFragmentCommunicationListener {
-        void onTyping(String ontype);
-
-    }
-
 
 }
 

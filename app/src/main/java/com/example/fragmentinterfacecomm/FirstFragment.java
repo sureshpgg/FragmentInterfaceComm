@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,25 +16,31 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.fragmentinterfacecomm.viewmodel.PageViewModel;
 import com.google.android.material.textfield.TextInputEditText;
 
 
 
 public class FirstFragment extends Fragment {
-    private OnFragmentCommunicationListener mListener;
-TextView type;
+    private PageViewModel pageViewModel;
+
     public FirstFragment() {
         // Required empty public constructor
     }
 
     /**
      * Create a new instance of this fragment
-     *
      * @return A new instance of fragment FirstFragment.
      */
-
     public static FirstFragment newInstance() {
         return new FirstFragment();
+    }
+
+    @Override public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // init ViewModel
+        pageViewModel = ViewModelProviders.of(requireActivity()).get(PageViewModel.class);
     }
 
     @Override
@@ -46,70 +53,20 @@ TextView type;
     @Override public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         TextInputEditText nameEditText = view.findViewById(R.id.textInputTextName);
-        TextInputEditText emailEditText = view.findViewById(R.id.textInputTextEmail);
-        type=view.findViewById(R.id.typestatus);
+
+        // Add Text Watcher on name input text
         nameEditText.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                onTypeStatus("");
 
             }
 
             @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                mListener.onNameChange(charSequence.toString());
+                pageViewModel.setName(charSequence.toString());
             }
 
             @Override public void afterTextChanged(Editable editable) {
 
             }
         });
-
-        emailEditText.addTextChangedListener(new TextWatcher() {
-            @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                onTypeStatus("");
-
-            }
-
-            @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                mListener.onEmailChange(charSequence.toString());
-            }
-
-            @Override public void afterTextChanged(Editable editable) {
-            }
-        });
     }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentCommunicationListener) {
-            mListener = (OnFragmentCommunicationListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentCommunicationListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity
-     */
-    public interface OnFragmentCommunicationListener {
-        void onNameChange(String name);
-
-        void onEmailChange(String email);
-    }
-
-    public void onTypeStatus(String status){
-        type.setText(status);
-
-    }
-
-
 }

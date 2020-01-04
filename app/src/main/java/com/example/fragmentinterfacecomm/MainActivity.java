@@ -7,7 +7,7 @@ import android.os.Bundle;
 
 import com.google.android.material.tabs.TabLayout;
 
-public class MainActivity extends AppCompatActivity implements FirstFragment.OnFragmentCommunicationListener,SecondFragment.OnSecondFragmentCommunicationListener{
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,32 +22,6 @@ public class MainActivity extends AppCompatActivity implements FirstFragment.OnF
         tabs.setupWithViewPager(viewPager);
     }
 
-    @Override
-    public void onNameChange(String name) {
-        String tag = "android:switcher:" + R.id.view_pager + ":" + 1;
-        SecondFragment fragment = (SecondFragment) getSupportFragmentManager().findFragmentByTag(tag);
-        if (fragment != null) {
-            fragment.onNameChange(name);
-        }
-    }
-
-    @Override
-    public void onEmailChange(String email) {
-        String tag = "android:switcher:" + R.id.view_pager + ":" + 1;
-        SecondFragment fragment = (SecondFragment) getSupportFragmentManager().findFragmentByTag(tag);
-        if (fragment != null) {
-            fragment.onEmailChange(email);
-        }
-    }
-
-    @Override
-    public void onTyping(String ontype) {
-        String tag = "android:switcher:" + R.id.view_pager + ":" + 0;
-        FirstFragment fragment = (FirstFragment) getSupportFragmentManager().findFragmentByTag(tag);
-        if (fragment != null) {
-            fragment.onTypeStatus(ontype);
-        }
-    }
 
 
 }
