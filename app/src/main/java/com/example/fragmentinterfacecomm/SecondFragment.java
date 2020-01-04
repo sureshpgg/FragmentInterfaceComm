@@ -13,8 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.fragmentinterfacecomm.viewmodel.PageViewModel;
-
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 
 /**
@@ -22,7 +23,6 @@ import com.example.fragmentinterfacecomm.viewmodel.PageViewModel;
  */
 public class SecondFragment extends Fragment {
     private TextView txtName;
-    private PageViewModel pageViewModel;
 
     /**
      * Use this factory method to create a new instance of this fragment.
@@ -36,7 +36,6 @@ public class SecondFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        pageViewModel = ViewModelProviders.of(requireActivity()).get(PageViewModel.class);
 
     }
 
@@ -51,15 +50,25 @@ public class SecondFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         txtName = view.findViewById(R.id.textViewName);
 
-        pageViewModel.getName().observe(requireActivity(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                txtName.setText(s);
-            }
-        });    }
 
 
+         }
 
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onResultReceived(String result) {
+        txtName.setText(result);
+    }
+
+    @Override public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override public void onPause() {
+        super.onPause();
+        EventBus.getDefault().unregister(this);
+    }
 
 
 }

@@ -13,13 +13,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.fragmentinterfacecomm.viewmodel.PageViewModel;
 import com.google.android.material.textfield.TextInputEditText;
 
+import org.greenrobot.eventbus.EventBus;
 
 
 public class FirstFragment extends Fragment {
-    private PageViewModel pageViewModel;
     public FirstFragment() {
         // Required empty public constructor
     }
@@ -34,7 +33,6 @@ public class FirstFragment extends Fragment {
 
     @Override public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        pageViewModel = ViewModelProviders.of(requireActivity()).get(PageViewModel.class);
     }
 
     @Override
@@ -57,7 +55,7 @@ public class FirstFragment extends Fragment {
             @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
 
-                pageViewModel.setName(charSequence.toString());
+                EventBus.getDefault().post(charSequence.toString());
             }
 
             @Override public void afterTextChanged(Editable editable) {
